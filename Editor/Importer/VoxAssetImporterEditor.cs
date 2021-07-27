@@ -1,8 +1,10 @@
-﻿using UnityEditor;
+﻿using System;
+using UnityEditor;
 using UnityEditor.AssetImporters;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
-namespace VoxSupport.Editor.Importer
+namespace VoxSupport.Editor
 {
     [CustomEditor(typeof(VoxAssetImporter))]
     [CanEditMultipleObjects]
@@ -14,18 +16,26 @@ namespace VoxSupport.Editor.Importer
         {
             new GUIContent("Model"), new GUIContent("Materials"), new GUIContent("Stats")
         };
-        
+
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
 
             switch (DrawToolbar())
             {
-                case 0: DrawModelOptions(); break;
-                case 1: DrawMaterialOptions(); break;
-                case 2: DrawStats(); break;
+                case 0:
+                    DrawModelOptions();
+                    break;
+
+                case 1:
+                    DrawMaterialOptions();
+                    break;
+
+                case 2:
+                    DrawStats();
+                    break;
             }
-            
+
             serializedObject.ApplyModifiedProperties();
             ApplyRevertGUI();
         }
@@ -34,30 +44,30 @@ namespace VoxSupport.Editor.Importer
         {
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            _selectedOptions = GUILayout.Toolbar(_selectedOptions, ToolbarValues, GUI.skin.button, 
+            _selectedOptions = GUILayout.Toolbar(_selectedOptions, ToolbarValues, GUI.skin.button,
                                                  GUI.ToolbarButtonSize.FitToContents, GUILayout.Height(25));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
-            
+
             return _selectedOptions;
         }
 
         private void DrawModelOptions()
         {
             string prefix = nameof(VoxAssetImporter.modelOptions) + ".";
-            
+
             DrawProperty(prefix + nameof(ImportModelOptions.orientation));
             DrawProperty(prefix + nameof(ImportModelOptions.scale));
             DrawProperty(prefix + nameof(ImportModelOptions.transformMesh), "Apply transform");
             DrawProperty(prefix + nameof(ImportModelOptions.moveToFloor));
         }
-        
+
         private void DrawMaterialOptions()
         {
             string prefix = nameof(VoxAssetImporter.materialsOptions) + ".";
             DrawProperty(prefix + nameof(ImportMaterialsOptions.material));
 
-            var voxAssetImporter = (VoxAssetImporter)target;
+            var voxAssetImporter = (VoxAssetImporter) target;
             if (targets.Length > 1 || !voxAssetImporter.materialsOptions.material)
             {
                 return;
@@ -72,7 +82,7 @@ namespace VoxSupport.Editor.Importer
             }
 
             EditorGUILayout.Space();
-            
+
             EditorGUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
             if (GUILayout.Button("Set as default", GUILayout.Width(96)))
@@ -81,22 +91,22 @@ namespace VoxSupport.Editor.Importer
             }
             EditorGUILayout.EndHorizontal();
         }
-        
+
         private void DrawProperty(string propertyName)
         {
             EditorGUILayout.PropertyField(serializedObject.FindProperty(propertyName));
         }
-        
+
         private void DrawProperty(string propertyName, string editorName)
         {
             EditorGUILayout.PropertyField(serializedObject.FindProperty(propertyName), new GUIContent(editorName));
         }
-        
+
         private void DrawStats()
         {
             string prefix = targets.Length > 1 ? "~" : "";
-            ImportStats importStats = targets.Length > 1 ? GetMeanImportStats() : ((VoxAssetImporter)target).stats;
-            
+            ImportStats importStats = targets.Length > 1 ? GetMeanImportStats() : ((VoxAssetImporter) target).stats;
+
             EditorGUILayout.LabelField("Time", EditorStyles.boldLabel);
             EditorGUILayout.LabelField("Import time", $"{prefix}{importStats.importTime}s");
             EditorGUILayout.LabelField("Convert time", $"{prefix}{importStats.convertTime}s");
@@ -114,7 +124,7 @@ namespace VoxSupport.Editor.Importer
 
             foreach (Object nTarget in targets)
             {
-                ImportStats importStats = ((VoxAssetImporter)nTarget).stats;
+                ImportStats importStats = ((VoxAssetImporter) nTarget).stats;
                 meanImportStats.importTime += importStats.importTime;
                 meanImportStats.convertTime += importStats.convertTime;
                 meanImportStats.vertexCount += importStats.vertexCount;

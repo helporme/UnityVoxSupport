@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace VoxSupport
+namespace VoxSupport.Extensions
 {
     public static class VoxMeshExtensions
     {
@@ -11,7 +11,7 @@ namespace VoxSupport
                 mesh.Vertices[i] = matrix.MultiplyPoint(mesh.Vertices[i]);
             }
         }
-        
+
         public static void Rotate(this VoxMesh mesh, Matrix4x4 matrix)
         {
             for (int i = 0; i < mesh.Vertices.Count; i++)

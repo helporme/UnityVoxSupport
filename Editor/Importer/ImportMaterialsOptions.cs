@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace VoxSupport.Editor.Importer
+namespace VoxSupport.Editor
 {
     [Serializable]
     public class ImportMaterialsOptions

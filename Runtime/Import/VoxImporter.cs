@@ -6,22 +6,22 @@ using UnityEngine;
 
 namespace VoxSupport
 {
-    public static class VoxImporter 
+    public static class VoxImporter
     {
         public static TVox Import<TVox>(string path) where TVox : IVox, new()
         {
             IVoxBuilder voxBuilder = new TVox().GetBuilder();
             Import(path, voxBuilder);
-            return (TVox)voxBuilder.Vox;
+            return (TVox) voxBuilder.Vox;
         }
-        
+
         public static void Import(string path, IVoxBuilder builder)
         {
             FileStream stream = File.OpenRead(path);
             Import(new BinaryReader(stream), builder);
             stream.Close();
         }
-       
+
         public static TVox Import<TVox>(BinaryReader reader) where TVox : IVox, new()
         {
             var vox = new TVox();
@@ -29,7 +29,7 @@ namespace VoxSupport
             Import(reader, voxBuilder);
             return vox;
         }
-        
+
         public static void Import(BinaryReader reader, IVoxBuilder builder)
         {
             ValidateMagicNumber(reader);
@@ -41,7 +41,7 @@ namespace VoxSupport
         private static void ValidateMagicNumber(BinaryReader reader)
         {
             byte[] magic = reader.ReadBytes(4);
-            
+
             if (!Compare4Bytes(magic, 'V', 'O', 'X', ' '))
             {
                 throw new VoxImportException($"Invalid vox magic number \"{Encoding.UTF8.GetString(magic)}\".");
@@ -71,13 +71,13 @@ namespace VoxSupport
             VoxChunk mainChunk = ReadChunk(reader);
             ValidateMainChunk(mainChunk);
             reader.ReadBytes(mainChunk.Size);
-            
+
             int readSize = 0;
-            
+
             while (readSize < mainChunk.ChildrenSize)
             {
                 VoxChunk chunk = ReadChunk(reader);
-                
+
                 if (Compare4Bytes(chunk.Id, 'P', 'A', 'C', 'K'))
                 {
                     reader.ReadInt32();
@@ -95,11 +95,11 @@ namespace VoxSupport
                 {
                     ReadPalette(reader, voxBuilder);
                 }
-                
+
                 readSize += chunk.Size + chunk.ChildrenSize + 4 * 3;
             }
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static bool Compare4Bytes(byte[] bytes, char c0, char c1, char c2, char c3)
         {
@@ -119,7 +119,7 @@ namespace VoxSupport
                 voxBuilder.SetVoxelColor(new int3(x, y, z), color);
             }
         }
-        
+
         private static void ReadPalette(BinaryReader reader, IVoxBuilder voxBuilder)
         {
             voxBuilder.SetPaletteSize(256);
@@ -129,11 +129,11 @@ namespace VoxSupport
                 float g = reader.ReadByte() / 255.0f;
                 float b = reader.ReadByte() / 255.0f;
                 float a = reader.ReadByte() / 255.0f;
-                
+
                 voxBuilder.SetPaletteColor(i, new Color(r, g, b, a));
             }
         }
-        
+
         private static VoxChunk ReadChunk(BinaryReader reader)
         {
             byte[] bytes = reader.ReadBytes(4);

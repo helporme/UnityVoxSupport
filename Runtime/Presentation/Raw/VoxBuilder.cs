@@ -1,6 +1,5 @@
 ﻿using Unity.Mathematics;
 using UnityEngine;
-using VoxSupport.Collections;
 
 namespace VoxSupport
 {
@@ -10,7 +9,7 @@ namespace VoxSupport
         {
             return new Builder(this);
         }
-        
+
         public class Builder : IVoxBuilder
         {
             public IVox Vox => _vox;
@@ -20,7 +19,7 @@ namespace VoxSupport
             {
                 _vox = vox;
             }
-            
+
             public void SetVoxelsGridSize(int3 size)
             {
                 _vox.Voxels = new Flatten3DArray<byte>(size);

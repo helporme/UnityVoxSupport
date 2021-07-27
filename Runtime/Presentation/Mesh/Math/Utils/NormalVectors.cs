@@ -1,6 +1,6 @@
 ﻿using Unity.Mathematics;
 
-namespace VoxSupport
+namespace VoxSupport.Utils
 {
     public static class NormalVectors
     {

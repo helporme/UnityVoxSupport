@@ -9,14 +9,14 @@ namespace VoxSupport.Convert
         {
             IVoxBuilder voxBuilder = new TVox().GetBuilder();
             CopyTo(vox.GetReader(), voxBuilder);
-            return (TVox)voxBuilder.Vox;
+            return (TVox) voxBuilder.Vox;
         }
 
         public static void CopyTo(IVoxReader inputReader, IVoxBuilder outputBuilder)
         {
             int3 voxelGridSize = inputReader.VoxelsSize;
             outputBuilder.SetVoxelsGridSize(voxelGridSize);
-            
+
             for (int z = 0; z < voxelGridSize.z; z++)
             {
                 for (int y = 0; y < voxelGridSize.y; y++)
@@ -32,7 +32,7 @@ namespace VoxSupport.Convert
 
             int paletteSize = inputReader.PaletteSize;
             outputBuilder.SetPaletteSize(paletteSize);
-            
+
             for (int i = 0; i < paletteSize; i++)
             {
                 Color color = inputReader.GetPaletteColor(i);

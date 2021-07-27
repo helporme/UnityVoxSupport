@@ -9,7 +9,7 @@ namespace VoxSupport
         {
             return new Reader(this);
         }
-        
+
         public class Reader : IVoxReader
         {
             public int3 VoxelsSize => _vox.Size;
@@ -21,7 +21,7 @@ namespace VoxSupport
             {
                 _vox = vox;
             }
-            
+
             public byte GetVoxelColor(int3 position)
             {
                 return _vox.Voxels[position].Color;

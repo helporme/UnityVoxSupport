@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace VoxSupport.Editor.Importer
+namespace VoxSupport.Editor
 {
     [Serializable]
     public class ImportModelOptions
@@ -9,12 +9,12 @@ namespace VoxSupport.Editor.Importer
         public float scale = 0.1f;
         public bool moveToFloor;
         public bool transformMesh = true;
-        
+
         public enum Orientation
         {
             XYZ,
             XZY,
-            ZYX,
+            ZYX
         }
     }
 }

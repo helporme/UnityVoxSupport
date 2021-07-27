@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Unity.Mathematics;
-using UnityEngine;
 
 namespace VoxSupport
 {
@@ -9,7 +8,7 @@ namespace VoxSupport
         public VoxMesh Mesh;
         public int3 Axises;
         public bool IsClockwise;
-        
+
         public List<int> InputCrossLinks;
         public List<Vertex> Vertices;
     }

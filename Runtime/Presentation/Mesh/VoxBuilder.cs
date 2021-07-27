@@ -9,7 +9,7 @@ namespace VoxSupport
         {
             return new Builder(this);
         }
-        
+
         public class Builder : IVoxBuilder
         {
             public IVox Vox => _vox;
@@ -19,7 +19,7 @@ namespace VoxSupport
             {
                 _vox = vox;
             }
-            
+
             public void SetVoxelsGridSize(int3 size)
             {
                 _vox = new VoxMesh(size);

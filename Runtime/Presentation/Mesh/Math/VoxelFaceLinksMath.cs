@@ -1,4 +1,5 @@
 ﻿using Unity.Mathematics;
+using VoxSupport.Utils;
 
 namespace VoxSupport
 {
@@ -10,14 +11,14 @@ namespace VoxSupport
             {
                 return;
             }
-            
+
             for (int cornerIndex = 0; cornerIndex < 4; cornerIndex++)
             {
-                if ((1 << cornerIndex & Corners) == 0)
+                if (((1 << cornerIndex) & Corners) == 0)
                 {
                     continue;
                 }
-                
+
                 CalculateLeftLinks(cornerIndex);
                 CalculateDownLinks(cornerIndex);
             }
@@ -32,19 +33,19 @@ namespace VoxSupport
         {
             int sideCorner = FaceCorners.LinkX[corner];
             int axisIndex = Axises.x;
-            bool isBackswingSideCorner = (1 << sideCorner & FaceCorners.LeftSide) != 0;
+            bool isBackswingSideCorner = ((1 << sideCorner) & FaceCorners.LeftSide) != 0;
             CalculateLinks(corner, sideCorner, isBackswingSideCorner, axisIndex);
         }
-        
+
         private void CalculateDownLinks(int corner)
         {
             int sideCorner = FaceCorners.LinkY[corner];
             int axisIndex = Axises.y;
-            bool isBackswingSideCorner = (1 << sideCorner & FaceCorners.DownSide) != 0;
+            bool isBackswingSideCorner = ((1 << sideCorner) & FaceCorners.DownSide) != 0;
             CalculateLinks(corner, sideCorner, isBackswingSideCorner, axisIndex);
         }
 
-          private void CalculateLinks(int corner, int sideCorner, bool isBackswingSideCorner, int axisIndex)
+        private void CalculateLinks(int corner, int sideCorner, bool isBackswingSideCorner, int axisIndex)
         {
             int edge = FaceCorners.Edges[corner][sideCorner];
             int cornerVert = CornerVertIndices[corner];
@@ -54,20 +55,20 @@ namespace VoxSupport
             {
                 if (IsEdgeExist(edge))
                 {
-            	    AddVerticesLink(new int2(corner, sideCorner), new int2(cornerVert, sideCornerVert));
+                    AddVerticesLink(new int2(corner, sideCorner), new int2(cornerVert, sideCornerVert));
                 }
                 return;
             }
 
             bool prevVoxelHasEdge = IsEdgeExist(edge);
-            
+
             for (int d = Pos[axisIndex] - 1; d >= 0; d--)
             {
                 int3 sidePos = Pos;
                 sidePos[axisIndex] = d;
                 Voxel sideVoxel = Mesh.Voxels[sidePos];
 
-                if (sideVoxel.Color != Voxel.Color || (sideVoxel.Normals & 1 << FaceIndex) == NormalIndices.None)
+                if (sideVoxel.Color != Voxel.Color || (sideVoxel.Normals & (1 << FaceIndex)) == NormalIndices.None)
                 {
                     return;
                 }
@@ -75,24 +76,24 @@ namespace VoxSupport
                 if (!IsEdgeExist(sidePos, sideVoxel, edge))
                 {
                     int backswingCorner = FaceCorners.EdgeClosestBackswingCorners[edge];
-                    if (prevVoxelHasEdge && (sideVoxel.Corners & 1 << FaceIndex * 4 + backswingCorner) != 0)
+                    if (prevVoxelHasEdge && (sideVoxel.Corners & (1 << (FaceIndex * 4 + backswingCorner))) != 0)
                     {
-            	        int backswingCornerVert = sideVoxel.CornerVertIndices[FaceIndex][backswingCorner];
-            	        AddVerticesLink(new int2(corner, sideCorner), new int2(cornerVert, backswingCornerVert));
+                        int backswingCornerVert = sideVoxel.CornerVertIndices[FaceIndex][backswingCorner];
+                        AddVerticesLink(new int2(corner, sideCorner), new int2(cornerVert, backswingCornerVert));
                     }
                     return;
                 }
-                
+
                 prevVoxelHasEdge = true;
 
-                if ((sideVoxel.Corners & 1 << FaceIndex * 4 + corner) != 0)
+                if ((sideVoxel.Corners & (1 << (FaceIndex * 4 + corner))) != 0)
                 {
                     sideCornerVert = sideVoxel.CornerVertIndices[FaceIndex][corner];
                     AddVerticesLink(new int2(corner, sideCorner), new int2(cornerVert, sideCornerVert));
                     return;
                 }
-                
-                if ((sideVoxel.Corners & 1 << FaceIndex * 4 + sideCorner) != 0)
+
+                if ((sideVoxel.Corners & (1 << (FaceIndex * 4 + sideCorner))) != 0)
                 {
                     sideCornerVert = sideVoxel.CornerVertIndices[FaceIndex][sideCorner];
                     AddVerticesLink(new int2(corner, sideCorner), new int2(cornerVert, sideCornerVert));
@@ -105,16 +106,16 @@ namespace VoxSupport
         {
             return IsEdgeExist(Pos, Voxel, edge);
         }
-        
+
         private bool IsEdgeExist(int3 pos, Voxel voxel, int edge)
         {
             int sideNormalIndex = FaceCorners.EdgePerpNormalIndices[FaceIndex][edge];
-            if ((voxel.Normals & 1 << sideNormalIndex) == NormalIndices.None)
+            if ((voxel.Normals & (1 << sideNormalIndex)) == NormalIndices.None)
             {
                 Voxel sideVoxel = Mesh.Voxels[pos + NormalVectors.ForwardVectors[sideNormalIndex]];
-                return sideVoxel.Color != Voxel.Color || (sideVoxel.Normals & 1 << FaceIndex) == 0;
+                return sideVoxel.Color != Voxel.Color || (sideVoxel.Normals & (1 << FaceIndex)) == 0;
             }
-            
+
             return true;
         }
 
@@ -122,25 +123,25 @@ namespace VoxSupport
         {
             if (FaceCorners.IsPositiveLinkOrder[corners.x][corners.y])
             {
-               if (corners.y == FaceCorners.Next[corners.x])
-               {
-            	   Mesh.Links[cornerVerts.y] = cornerVerts.x;
-               }
-               else
-               {
-                   Mesh.Links[cornerVerts.x] = cornerVerts.y;
-               }
+                if (corners.y == FaceCorners.Next[corners.x])
+                {
+                    Mesh.Links[cornerVerts.y] = cornerVerts.x;
+                }
+                else
+                {
+                    Mesh.Links[cornerVerts.x] = cornerVerts.y;
+                }
             }
             else
             {
-            	if (corners.x == FaceCorners.Next[corners.y])
-            	{
+                if (corners.x == FaceCorners.Next[corners.y])
+                {
                     Mesh.Links[cornerVerts.y] = cornerVerts.x;
-            	}
-            	else
-            	{
+                }
+                else
+                {
                     Mesh.Links[cornerVerts.x] = cornerVerts.y;
-            	}
+                }
             }
         }
 
@@ -152,7 +153,7 @@ namespace VoxSupport
             return Mesh.Voxels.InBounds(rightPos) && Mesh.Voxels[rightPos].Color == Voxel.Color ||
                    Mesh.Voxels.InBounds(upPos) && Mesh.Voxels[upPos].Color == Voxel.Color;
         }
-        
+
         private void CalculateCrossLinks()
         {
             int3 sidePos = Pos;
@@ -199,7 +200,7 @@ namespace VoxSupport
                     return true;
                 }
             }
-            
+
             return false;
         }
     }
