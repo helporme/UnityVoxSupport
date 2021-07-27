@@ -108,13 +108,13 @@ namespace VoxSupport.Editor
             ImportStats importStats = targets.Length > 1 ? GetMeanImportStats() : ((VoxAssetImporter) target).stats;
 
             EditorGUILayout.LabelField("Time", EditorStyles.boldLabel);
-            EditorGUILayout.LabelField("Import time", $"{prefix}{importStats.importTime}s");
-            EditorGUILayout.LabelField("Convert time", $"{prefix}{importStats.convertTime}s");
-            
+            EditorGUILayout.LabelField("Import time", $"{prefix}{Math.Round(importStats.importTime, 3)}s");
+            EditorGUILayout.LabelField("Convert time", $"{prefix}{Math.Round(importStats.convertTime, 3)}s");
+
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Mesh", EditorStyles.boldLabel);
             EditorGUILayout.LabelField("Vertex count", $"{prefix}{importStats.vertexCount}");
-            EditorGUILayout.LabelField("Link count", $"{prefix}{importStats.linkCount}");
+            EditorGUILayout.LabelField("Triangle count", $"{prefix}{importStats.triangleCount}");
             EditorGUILayout.LabelField("Face count", $"{prefix}{importStats.faceCount}");
         }
 
@@ -128,14 +128,14 @@ namespace VoxSupport.Editor
                 meanImportStats.importTime += importStats.importTime;
                 meanImportStats.convertTime += importStats.convertTime;
                 meanImportStats.vertexCount += importStats.vertexCount;
-                meanImportStats.linkCount += importStats.linkCount;
+                meanImportStats.triangleCount += importStats.triangleCount;
                 meanImportStats.faceCount += importStats.faceCount;
             }
 
             meanImportStats.importTime /= targets.Length;
             meanImportStats.convertTime /= targets.Length;
             meanImportStats.vertexCount /= targets.Length;
-            meanImportStats.linkCount /= targets.Length;
+            meanImportStats.triangleCount /= targets.Length;
             meanImportStats.faceCount /= targets.Length;
 
             return meanImportStats;

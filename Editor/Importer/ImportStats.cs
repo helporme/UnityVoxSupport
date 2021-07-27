@@ -10,6 +10,6 @@ namespace VoxSupport.Editor
 
         public int vertexCount;
         public int faceCount;
-        public int linkCount;
+        public int triangleCount;
     }
 }

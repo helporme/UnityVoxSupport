@@ -42,7 +42,7 @@ namespace VoxSupport.Editor
             stats.convertTime = stopwatch.ElapsedMilliseconds / 1000f;
 
             stats.vertexCount = vox.Vertices.Count;
-            stats.linkCount = vox.Links.Count;
+            stats.triangleCount = vox.Tris.Count;
             stats.faceCount = vox.Faces.Count(f => f.Vertices.Count > 0);
 
             if (modelOptions.transformMesh)
