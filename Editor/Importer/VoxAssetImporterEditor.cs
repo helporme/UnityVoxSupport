@@ -10,8 +10,8 @@ namespace VoxSupport.Editor
     [CanEditMultipleObjects]
     public class VoxAssetImporterEditor : ScriptedImporterEditor
     {
-        private int _selectedOptions;
-        
+        private static int _selectedSubInspector;
+
         private static readonly GUIContent[] ToolbarValues =
         {
             new GUIContent("Model"), new GUIContent("Materials"), new GUIContent("Stats")
@@ -44,12 +44,12 @@ namespace VoxSupport.Editor
         {
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            _selectedOptions = GUILayout.Toolbar(_selectedOptions, ToolbarValues, GUI.skin.button,
+            _selectedSubInspector = GUILayout.Toolbar(_selectedSubInspector, ToolbarValues, GUI.skin.button,
                                                  GUI.ToolbarButtonSize.FitToContents, GUILayout.Height(25));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
 
-            return _selectedOptions;
+            return _selectedSubInspector;
         }
 
         private void DrawModelOptions()
