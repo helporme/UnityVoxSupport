@@ -1,15 +1,11 @@
 # UnityVoxSupport
 
----
-
 This package provides direct support for .vox files in Unity.
 
 ![](git/UIImage.png)
 
 
 ## Install
-
----
 
 1. Open package manager
 2. Select **+**
@@ -18,8 +14,6 @@ This package provides direct support for .vox files in Unity.
 
 
 ## How it works
-
----
 
 1. Import .vox file as 3d array of voxels. 
 2. Calculate voxels normals.
@@ -36,8 +30,6 @@ This package provides direct support for .vox files in Unity.
 
 
 ## API
-
----
 
 ### Quick start
 
@@ -74,7 +66,5 @@ This package provides direct support for .vox files in Unity.
 
 
 ## License
-
----
 
 [MIT](LICENSE)
