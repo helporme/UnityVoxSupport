@@ -77,4 +77,4 @@ This package provides direct support for .vox files in Unity.
 
 ---
 
-MIT
+[MIT](LICENSE)
