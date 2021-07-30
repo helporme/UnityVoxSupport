@@ -25,23 +25,6 @@ namespace VoxSupport
             set => _values[i] = value;
         }
 
-        public IEnumerable<int3> Positions
-        {
-            get
-            {
-                for (int x = 0; x < Size.x; x++)
-                {
-                    for (int y = 0; y < Size.y; y++)
-                    {
-                        for (int z = 0; z < Size.z; z++)
-                        {
-                            yield return new int3(x, y, z);
-                        }
-                    }
-                }
-            }
-        }
-
         public readonly int3 Size;
         public readonly int Length;
 
@@ -67,12 +50,6 @@ namespace VoxSupport
         IEnumerator IEnumerable.GetEnumerator()
         {
             return _values.GetEnumerator();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int PosToIndex(int3 pos)
-        {
-            return pos.z * Size.x * Size.y + pos.y * Size.x + pos.x;
         }
 
         public void CopyTo(Flatten3DArray<T> outArray)
