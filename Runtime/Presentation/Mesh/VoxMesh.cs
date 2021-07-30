@@ -54,6 +54,7 @@ namespace VoxSupport
             Clear();
             CalculateNormals();
             CalculateCorners();
+            CalculateCorners();
             CalculateFaces();
             TriangulateFaces();
         }

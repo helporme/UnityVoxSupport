@@ -7,11 +7,18 @@ namespace VoxSupport
     {
         public void CalculateNormals()
         {
-            foreach (int3 pos in Voxels.Positions)
+            for (int x = 0; x < Voxels.Size.x; x++)
             {
-                if (Voxels.InBounds(pos) && Voxels[pos].Color != 0)
+                for (int z = 0; z < Voxels.Size.z; z++)
                 {
-                    CalculateVoxelNormals(pos);
+                    for (int y = 0; y < Voxels.Size.y; y++)
+                    {
+                        var pos = new int3(x, y, z);
+                        if (Voxels.InBounds(pos) && Voxels[pos].Color != 0)
+                        {
+                            CalculateVoxelNormals(pos);
+                        }
+                    }
                 }
             }
         }
