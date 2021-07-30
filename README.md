@@ -71,3 +71,10 @@ This package provides direct support for .vox files in Unity.
      voxMesh = voxRaw.Convert<VoxMesh>();
  }
 ```
+
+
+## License
+
+---
+
+MIT
