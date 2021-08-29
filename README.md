@@ -10,7 +10,7 @@ This package provides direct support for .vox files in Unity.
 1. Open package manager
 2. Select **+**
 3. Add package from git URL
-4. Write https://github.com/HelpOrMe/UnityVoxSupport.git
+4. Write https://github.com/HelpOrMe/UnityVoxSupport.git (make sure [git][https://git-scm.com/downloads] is installed)
 
 
 ## How it works
