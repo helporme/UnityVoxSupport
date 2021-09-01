@@ -24,7 +24,7 @@ This package provides direct support for .vox files in Unity.
    If you recursively iterate any vertex of the links array (like `links[links[links[0]]]..`) 
    you can get a connected graph.
 5. Calculate cross links, links between different graphs of the same face. 
-   All recursive cross links will be fixed in the next step 
+   All recursive cross links will be fixed in the next step.
 6. Calculate faces. Connect all graphs with cross links to get a simple polygon (monotone).
 7. Triangulate faces with ear clipping algorithm.
 
